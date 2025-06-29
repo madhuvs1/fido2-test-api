@@ -36,12 +36,19 @@ namespace Fido2TestApi
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.WithOrigins("https://localhost.dell.com", "https://fido2-test-api.di-np.pcf.dell.com", "https://localhost.dell.com:4200", "https://localhost.dell.com:5001")
-                          .AllowAnyHeader()
-                          .AllowAnyMethod()
-                          .AllowCredentials();
+                    policy
+                        .WithOrigins(
+                            "https://fido2-test-api.onrender.com",
+                            "https://fido2-test-web.onrender.com",
+                            "https://localhost.dell.com",
+                            "https://localhost.dell.com:4200",
+                            "https://localhost.dell.com:5001")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
                 });
             });
+
             #endregion
             builder.Services.Configure<Fido2Configuration>(builder.Configuration.GetSection("Fido2"));
             builder.Services.AddSingleton(provider =>
@@ -69,7 +76,7 @@ namespace Fido2TestApi
             #region localhost certificate
             builder.WebHost.ConfigureKestrel(serverOptions =>
             {
-                serverOptions.Listen(IPAddress.Any, 8080); // Listen on 0.0.0.0:8080 for Render
+                serverOptions.ListenAnyIP( 8080); // Listen on 0.0.0.0:8080 for Render
             });
 
             #endregion
@@ -86,7 +93,6 @@ namespace Fido2TestApi
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
             app.UseCors();
             app.UseRouting();
             app.UseSession();

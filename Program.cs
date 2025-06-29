@@ -65,15 +65,13 @@ namespace Fido2TestApi
             });
             builder.Services.AddSingleton(fido2);
             #endregion
-            
+
             #region localhost certificate
             builder.WebHost.ConfigureKestrel(serverOptions =>
             {
-                serverOptions.Listen(IPAddress.Loopback, 7050, listenOptions =>
-                {
-                    listenOptions.UseHttps("localhost.dell.com.pfx", "devpass123");
-                });
+                serverOptions.Listen(IPAddress.Any, 8080); // Listen on 0.0.0.0:8080 for Render
             });
+
             #endregion
 
             var app = builder.Build();

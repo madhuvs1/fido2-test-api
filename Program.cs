@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using System.Text;
 
-//fido2-test.npdigateway-za1-np.kob.dell.com  --> localhost.dell.com:4200
+//fido2-test.npdigateway-za1-np.kob.dell.com  --> fido2-test-web.onrender.com:4200
 namespace Fido2TestApi
 {
 
@@ -38,11 +38,7 @@ namespace Fido2TestApi
                 {
                     policy
                         .WithOrigins(
-                            "https://fido2-test-api.onrender.com",
-                            "https://fido2-test-web.onrender.com",
-                            "https://localhost.dell.com",
-                            "https://localhost.dell.com:4200",
-                            "https://localhost.dell.com:5001")
+                            "https://fido2-test-web.onrender.com")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
@@ -63,12 +59,12 @@ namespace Fido2TestApi
 
 
             #region FIDO2 RPID registration
-            //https://localhost.dell.com/.well-known/webauthn 
+            //https://fido2-test-web.onrender.com/.well-known/webauthn 
             var fido2 = new Fido2(new Fido2Configuration
-            {
-                ServerDomain = "localhost.dell.com",
+            {//https://fido2-test-web.onrender.com/
+                ServerDomain = "fido2-test-web.onrender.com",
                 ServerName = "FIDO2 Demo",
-                Origins = new HashSet<string>() {"https://localhost.dell.com", "https://localhost.dell.com:4200", "https://localhost.dell.com:5001" }
+                Origins = new HashSet<string>() { "https://fido2-test-web.onrender.com" }
             });
             builder.Services.AddSingleton(fido2);
             #endregion
@@ -140,7 +136,7 @@ namespace Fido2TestApi
                 var options = new CredentialCreateOptions
                 {
                     Challenge = Convert.FromBase64String(challenge),
-                    Rp = new PublicKeyCredentialRpEntity("localhost.dell.com", "FIDO2 Demo", null),
+                    Rp = new PublicKeyCredentialRpEntity("fido2-test-web.onrender.com", "FIDO2 Demo", null),
                     User = new Fido2User
                     {
                         Id = Encoding.UTF8.GetBytes(request.Username),

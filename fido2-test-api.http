@@ -1,0 +1,6 @@
+@fido2-test-api_HostAddress = http://localhost:5028
+
+GET {{fido2-test-api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

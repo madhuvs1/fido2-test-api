@@ -1,0 +1,14 @@
+# Ignore Visual Studio folder
+.vs/
+
+# Ignore Debug binaries folder
+fido2-test-api/bin/Debug/
+bin/Debug/
+bin/Release/
+bin/Release/net8.0
+
+# Ignore obj folder
+obj/
+
+# Ignore Properties/PublishProfiles
+Properties/PublishProfiles

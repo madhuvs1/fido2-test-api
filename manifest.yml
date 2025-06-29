@@ -1,0 +1,14 @@
+applications:
+  - name: fido2-test-api
+    buildpacks:
+      - dicf_dotnet_core_buildpack_latest
+    disk_quota: 1GB
+    instances: 1
+    memory: 1GB
+    log-rate-limit-per-second: 1MB
+    timeout: 180
+    stack: cflinuxfs4
+    routes:
+      - route: https://fido2-test-api.r2.pcf.dell.com
+    env: 
+     ASPNETCORE_ENVIRONMENT: Dev

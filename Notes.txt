@@ -1,0 +1,4 @@
+dotnet add package Microsoft.Data.Sqlite
+FidoCredentialRepositoryLite created this class to connect to SqLite db 
+
+Host this .net api in internet Render.com 

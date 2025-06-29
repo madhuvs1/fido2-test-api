@@ -116,7 +116,7 @@ namespace Fido2TestApi
                     user,
                     existingCreds,
                     AuthenticatorSelection.Default,
-                    AttestationConveyancePreference.None
+                    AttestationConveyancePreference.Direct
                 );
 
                 challengeService.Set("fido2.challenge", Convert.ToBase64String(options.Challenge));

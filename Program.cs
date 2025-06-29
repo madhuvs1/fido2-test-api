@@ -6,6 +6,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 
 //fido2-test.npdigateway-za1-np.kob.dell.com  --> fido2-test-web.onrender.com:4200
 namespace Fido2TestApi
@@ -144,7 +145,9 @@ namespace Fido2TestApi
                         DisplayName = request.DisplayName
                     }
                 };
-
+                request.Attestation =
+                    JsonSerializer.Deserialize<AuthenticatorAttestationRawResponse>(request
+                        .AttestationJson.GetRawText());
                 var result = await fido2.MakeNewCredentialAsync(request.Attestation, options, (args, ct) => Task.FromResult(true));
                 var credentialId = Convert.ToBase64String(result.Result.CredentialId);
 
@@ -243,6 +246,7 @@ namespace Fido2TestApi
     {
         public string Username { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
+        public JsonElement AttestationJson { get; set; } = default!;
         public AuthenticatorAttestationRawResponse Attestation { get; set; } = default!;
     }
 

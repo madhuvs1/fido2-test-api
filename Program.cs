@@ -145,10 +145,10 @@ namespace Fido2TestApi
                         DisplayName = request.DisplayName
                     }
                 };
-                request.Attestation =
+                request.AttestationResponse =
                     JsonSerializer.Deserialize<AuthenticatorAttestationRawResponse>(request
-                        .AttestationJson.GetRawText());
-                var result = await fido2.MakeNewCredentialAsync(request.Attestation, options, (args, ct) => Task.FromResult(true));
+                        .Attestation.GetRawText());
+                var result = await fido2.MakeNewCredentialAsync(request.AttestationResponse, options, (args, ct) => Task.FromResult(true));
                 var credentialId = Convert.ToBase64String(result.Result.CredentialId);
 
                 if (await repoLite.CredentialExistsAsync(credentialId))
@@ -246,8 +246,8 @@ namespace Fido2TestApi
     {
         public string Username { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
-        public JsonElement AttestationJson { get; set; } = default!;
-        public AuthenticatorAttestationRawResponse Attestation { get; set; } = default!;
+        public JsonElement Attestation { get; set; } = default!;
+        public AuthenticatorAttestationRawResponse AttestationResponse { get; set; } = default!;
     }
 
     public class FidoLoginBeginRequest

@@ -155,7 +155,14 @@ namespace Fido2TestApi
                     return Results.BadRequest("This security key is already registered.");
 
                 await repoLite.InsertCredentialAsync(request, result);
-                return Results.Json(result);
+                return Results.Json(new
+                {
+                    CredentialId = Convert.ToBase64String(result.Result.CredentialId),
+                    PublicKey = Convert.ToBase64String(result.Result.PublicKey),
+                    Counter = result.Result.Counter,
+                    Aaguid = result.Result.Aaguid.ToString(),
+                    CredType = result.Result.CredType
+                });
             });
 
             app.MapPost("/assertionOptions", async (

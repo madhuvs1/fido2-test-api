@@ -121,7 +121,20 @@ namespace Fido2TestApi
                 );
 
                 challengeService.Set("fido2.challenge", Convert.ToBase64String(options.Challenge));
-                return Results.Json(options);
+                // Serialize options to JSON
+                var json = JsonSerializer.Serialize(
+                    options,
+                    new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }
+                );
+
+                // Inject "residentKey": "preferred" into authenticatorSelection block
+                json = json.Replace(
+                    "\"authenticatorSelection\":{",
+                    "\"authenticatorSelection\":{\"residentKey\":\"preferred\","
+                );
+
+                // Return the modified JSON
+                return Results.Content(json, "application/json");
             });
 
 

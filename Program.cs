@@ -195,11 +195,22 @@ namespace Fido2TestApi
                 challengeService.Set("fido2.assertion.username", request.Username);
 
                 //lets fail the assertion
-                return Results.Json(options, new JsonSerializerOptions
+                var brokenResponse = new
                 {
-                    PropertyNamingPolicy = null,  // PascalCase keys
-                    WriteIndented = true
-                });
+                    Challenge = Convert.ToBase64String(options.Challenge),
+                    Timeout = options.Timeout,
+                    RpId = options.RpId,
+                    AllowCredentials = options.AllowCredentials.Select(x => new
+                    {
+                        Type = "PublicKey",
+                        Id = Convert.ToBase64String(x.Id)
+                    }).ToArray(),
+                    UserVerification = options.UserVerification,
+                    Status = "ok",
+                    ErrorMessage = ""
+                };
+
+                return Results.Json(brokenResponse);
             });
 
             app.MapPost("/makeAssertion", async (

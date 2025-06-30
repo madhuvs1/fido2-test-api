@@ -188,7 +188,7 @@ namespace Fido2TestApi
                 var userCreds = await repoLite.GetUserCredentialsAsync(request.Username);
                 if (!userCreds.Any()) return Results.BadRequest("No credentials found for this user");
 
-                var options = fido2.GetAssertionOptions(userCreds, UserVerificationRequirement.Preferred);
+                var options = fido2.GetAssertionOptions(userCreds, UserVerificationRequirement.Required);
                 challengeService.Set("fido2.assertion.challenge", Convert.ToBase64String(options.Challenge));
                 challengeService.Set("fido2.assertion.username", request.Username);
 

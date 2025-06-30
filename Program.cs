@@ -7,6 +7,8 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 //fido2-test.npdigateway-za1-np.kob.dell.com  --> fido2-test-web.onrender.com:4200
 namespace Fido2TestApi
@@ -192,7 +194,12 @@ namespace Fido2TestApi
                 challengeService.Set("fido2.assertion.challenge", Convert.ToBase64String(options.Challenge));
                 challengeService.Set("fido2.assertion.username", request.Username);
 
-                return Results.Json(options);
+                //lets fail the assertion
+                return Results.Json(options, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = null,  // PascalCase keys
+                    WriteIndented = true
+                });
             });
 
             app.MapPost("/makeAssertion", async (

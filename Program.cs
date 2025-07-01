@@ -194,23 +194,7 @@ namespace Fido2TestApi
                 challengeService.Set("fido2.assertion.challenge", Convert.ToBase64String(options.Challenge));
                 challengeService.Set("fido2.assertion.username", request.Username);
 
-                //lets fail the assertion
-                var brokenResponse = new
-                {
-                    Challenge = Convert.ToBase64String(options.Challenge),
-                    Timeout = options.Timeout,
-                    RpId = options.RpId,
-                    AllowCredentials = options.AllowCredentials.Select(x => new
-                    {
-                        Type = "PublicKey",
-                        Id = Convert.ToBase64String(x.Id)
-                    }).ToArray(),
-                    UserVerification = options.UserVerification,
-                    Status = "ok",
-                    ErrorMessage = ""
-                };
-
-                return Results.Json(brokenResponse);
+                return Results.Json(options);
             });
 
             app.MapPost("/makeAssertion", async (
